@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include viewports *.css
+recursive-include viewports *.csv
+recursive-include viewports *.html
+recursive-include viewports *.ico
+recursive-include viewports *.js
+recursive-include viewports *.json
+recursive-include viewports *.md
+recursive-include viewports *.png
+recursive-include viewports *.py
+recursive-include viewports *.svg
+recursive-include viewports *.txt
+recursive-exclude viewports *.pyc
