@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Viewports</title>
+    {% block page_styles %}{% endblock %}
+   <script src="/assets/viewports/js/less.js" ></script>
+
+  </head>
+  <body>
+
+	{% include 'templates/header.html' %}
+    {% block page %}{% endblock %}
+    {% include 'templates/announcements.html' %}
+    
+
+
+  </body>
+</html>

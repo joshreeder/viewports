@@ -1,0 +1,85 @@
+<header>
+  <div class="header row">
+    <div class="logo-box">
+      <img src="assets/viewports/img/evaqua_farms_logo.svg" />
+    </div>
+    <div class="title">{{name}}</div>
+  </div>
+  <div class="header-middle">
+    <div class="left">
+      <div class="bottom-align">
+        <div>daily average</div>
+        <div class="weight">
+          {{header.daily_average}} <span class="small-caps">lbs</span>
+        </div>
+      </div>
+    </div>
+    <div class="middle">
+      <div class="small-caps align-top">
+        today
+      </div>
+      <div class="small-caps align-middle">
+        <div>
+          <div class="number">
+            {{header.pounds_today.packed}}
+          </div>
+          <div class="lbs">
+            lbs
+          </div>
+        </div>
+      </div>
+      <div class="small-caps align-bottom">
+        <div>of  {{header.pounds_today.total}} lbs</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="top">
+        <div class="date">
+          <div class="weekday">
+            {{header.weekday}}
+          </div>
+          <div class="month">
+            {{header.date}}
+          </div>
+        </div>
+        <div class="time">
+          <div class="time-container">
+            <div id="time"></div><div class="pm" id="ampm"></div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom">
+        <div>
+          speed: {{header.speed}} lbs / hour
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="header-bottom">
+    <div class="black-overlay">
+    </div>
+  <div class="signpost" style="width:{{header.percent_complete}}">
+    {{header.percent_complete}}
+  </div>  
+  </div>
+</header>
+
+<script>
+
+function startTime() {
+  var date = new Date();
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? '0'+minutes : minutes;
+  var strTime = hours + ':' + minutes;
+  document.getElementById('time').innerHTML = strTime;
+  document.getElementById('ampm').innerHTML = ampm;
+  t = setTimeout(function() {
+    startTime()
+  }, 5000);
+}
+startTime();
+</script>

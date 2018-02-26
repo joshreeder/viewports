@@ -1,0 +1,289 @@
+
+body {
+	margin: 0;
+	font-family: helvetica;
+	font-family: 'Poppins';
+	text-transform: uppercase;
+}
+header{
+	background-color: @header-color;;
+	height: 25vh;
+}
+.row {
+	display: flex;
+	flex-direction: row;
+
+}
+.header {
+	background-color: @header-color;
+	padding-right: @side-padding;
+	height: 30%;
+	line-height: ~"calc(25vh * .3)";
+	font-size: ~"calc(25vh * .3 * .3)";
+	.title {
+		margin-left: auto;
+		color: white;
+		text-transform: uppercase;
+		font-weight: 300;
+		letter-spacing: 5px;
+	}
+	.logo-box {
+		width: ~"calc(25vh * .3 * 1.8 * .85)";
+		height: ~"calc(25vh * .3 * 1.8)";
+		background-color: black;
+		position: absolute;
+		top: 0px;
+		left: @side-padding;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		img {
+			width: 60%;
+			height: auto;
+		}
+	}
+}
+.header-middle {
+	text-transform: uppercase;
+	
+	height: ~"calc(70% * .875)";
+	display: flex;
+	align-items:center;
+	background-color: @light-black;
+	color: white;
+	.small-caps {
+
+		font-size: @fs-small;
+		font-family: 'Poppins';
+		text-transform: uppercase;
+		font-weight: 500;
+
+	}
+	.left {
+		
+
+		font-size: @fs-small;
+		font-family: 'Poppins';
+		text-transform: uppercase;
+		font-weight: 500;
+		height: 70%;
+		width: 25%;
+		padding-left: @side-padding;
+		display: flex;
+		align-items:flex-end;
+		.weight {
+			font-size: @fs-medium;
+			font-family: 'Oswald';
+			font-weight: 400;
+			line-height: @fs-medium;
+			padding: 0;
+			height: ~"calc(@{fs-medium} + 1px)";
+		}
+
+	}
+	.middle {
+		
+		width: 35%;
+		height: 70%;
+		display: flex;
+		flex-direction:column;
+		.align-top {
+			height: 20%;
+		}
+		.align-middle {
+			height: 60%;
+			align-items: center;
+			div {
+				
+				display: flex;
+				align-items: flex-end;
+				.number {
+					font-size: @fs-large;
+					font-family: 'Oswald';
+					line-height: @fs-large;
+				}
+				.lbs {
+
+					line-height: @fs-small;
+					height: @fs-small;
+					margin-left: 3px;
+
+				}
+			}
+			
+		}
+		.align-bottom {
+			height: 20%;
+			display: flex;
+			align-items:flex-end;
+			line-height: ~"calc(@{fs-small} + 1px)";
+
+
+		}
+	}
+	.right {
+		background-color: @mid-black;
+		width: 40%;
+		height: 100%;
+
+		border-left: 3px solid @header-color;
+
+		
+		.top {
+
+			border-bottom: 3px solid @header-color;
+
+
+			height: 55%;
+			
+
+			display: flex;
+			
+			div.date,div.month {
+				display: flex;
+				align-items:center;
+			}
+
+			.date {
+
+				border-right: 3px solid @header-color;
+				
+				width: 65%;
+				height: 100%;
+				justify-content:center;
+				.weekday {
+					font-size:  @fs-extra-small;
+					margin-right: 5px;
+				}
+				.month {
+
+					font-size: @fs-medium;
+					font-family: 'Oswald';
+
+				}
+			}
+			.time {
+				
+
+				font-size: @fs-medium;
+				font-family: 'Oswald';
+				line-height: @fs-medium;
+				display: flex;
+				align-items:center;
+				justify-content:center;
+				
+				width: 35%;
+				
+				.time-container {
+					display: flex;
+				
+					flex-direction:row;
+					align-items:flex-start;
+					
+					.pm {
+						margin-left: 5px;
+						line-height:  @fs-extra-small;
+						font-size:  @fs-extra-small;
+					}
+					
+				}
+
+			}
+
+		}
+		.bottom {
+
+			height: 45%;
+
+			font-size: ~"calc(25vh * .3 * .4 * .5)";
+			display: flex;
+			align-items:center;
+			justify-content:center;
+
+		}
+	}
+}
+
+.header-bottom {
+	width: 100%;
+	height:~"calc(25vh * .7 * .125)";
+	background-color: @header-color;
+	position: relative;
+
+	.black-overlay{
+		width: 100%;
+		height:~"calc(25vh * .7 * .125)";
+		position: absolute;
+		top: 0;
+		left: 0;
+		background-color: rgba(0,0,0,.5);
+	}
+
+	* {
+	  -webkit-box-sizing: border-box;
+	  -moz-box-sizing: border-box;
+	  box-sizing: border-box;
+	}
+
+	.signpost { /* our rectangle */
+
+	  width:67%;
+	  height:~"calc(25vh * .7 * .125)";
+	  background-color: @header-color;
+	  /*margin:~"calc(25vh * .35 * .125)" 0;*/
+	  position: relative;
+	  text-align: right;
+	  font-size: ~"calc(25vh * .7 * .125 * .8)";
+	  line-height: ~"calc(25vh * .7 * .125)";
+	  color: white;
+	  font-family: 'Oswald';
+	  padding-right: 10px;
+	}
+
+	.signpost:after { /*  our pseudo-element */
+	  content:"";/* required */
+	  position: absolute; /* takes the 'cap' out off flow */
+	  top:0; /* stick it to top edge of the sign */
+	  left:100%; /* push it way overto the right*/
+	  height:0; /* we're doing this with borders remember */
+	  width:0; 
+	  border-width: ~"calc(25vh * .35 * .125)";
+	  border-style:solid;
+	  border-color:@header-color; /* same as bg of our rectangle */
+	  /* now we make some of theborders disappear*/
+	  border-top-color:transparent;
+	  border-bottom-color:transparent;
+	  border-right-color:transparent;
+	}
+
+}
+
+.body {
+	height: ~"calc(65vh)";
+	width: ~"calc(100%)";
+	background-color: black;
+	color: white;
+}
+
+.announcements {
+	height: 10vh;
+	width: 100%;
+	background-color: green;
+	color:white;
+	.title {
+		font-size: @fs-small;
+		height: 30%;
+		background-color: black;
+		display: flex;
+		align-items:center;
+		padding-left: @side-padding;
+	}
+	.content {
+		background-color: @header-color;
+		height: 70%;
+		display: flex;
+		align-items:center;
+		justify-content:center;
+		font-size: ~"calc(25vh * .3 * .4 * .5)";
+	}
+}

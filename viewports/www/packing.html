@@ -1,0 +1,60 @@
+{% extends 'templates/base.html' %}
+
+{% block page_styles %}
+<link rel="stylesheet/less" type="text/css" href="static/css/packing.less" />
+{% endblock %}
+
+{% block page %}
+<div class="body packaging-page">
+  <div class="section">
+    <div class="title-and-list">
+      <div class="title">
+        sysco
+      </div>
+      <div class="item-row">
+        <div class="quantity">
+          4x
+        </div>
+        <div class="item">
+          4-6 oz frs rrt fil
+        </div>
+        <div class="progress-bar">
+          <div class="inner-progress-bar">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="progress-indicator">
+
+      <div class="progress-box">
+      </div>
+      <div class="total">
+        24
+      </div>
+
+    </div>
+  </div>
+  
+</div>
+
+<script type="text/javascript">
+var bar = new ProgressBar.Circle(".progress-box", {
+  strokeWidth: 6,
+  easing: 'easeInOut',
+  duration: 1400,
+  color: '#edede8',
+  trailColor: '#7f6b00',
+  trailWidth: 3,
+  svgStyle: null,
+  text: {
+    // Initial value for text.
+    // Default: null
+    value: '5',
+    className: 'circle-text'
+  }
+});
+
+bar.animate(.7);  // Number from 0.0 to 1.0
+
+</script>
+{% endblock %}

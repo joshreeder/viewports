@@ -1,0 +1,28 @@
+@import url('variables.less');
+@header-color: @blue;
+@import url('main.less');
+.sa-thead {
+	
+	justify-content:space-between;
+	align-items:flex-end;
+	font-size: ~"calc(25vh * .3 * .4 * .4)";
+	height: ~"calc(25vh * .7 * .45)";
+	border-bottom: 3px solid @header-color;
+	padding: 0 @side-padding 0 @side-padding;
+}
+.item-list {
+	padding-top: ~"calc(25vh * .3 * .4 * .4)";
+	padding-bottom: ~"calc(25vh * .3 * .4 * .4)";
+	border-bottom: 3px solid @header-color;
+	.item-row {
+		justify-content:space-between;
+		font-size: ~"calc(25vh * .3 * .4)";
+		height: ~"calc(25vh * .3 * .8)";
+		padding: 0 @side-padding 0 @side-padding;
+		align-items:center;
+		&.completed {
+			color: @header-color;
+		}
+	}
+
+}

@@ -1,0 +1,71 @@
+@import url('variables.less');
+@header-color: @white;
+@import url('main.less');
+@import url('circle.css');
+
+@gold: #7f6b00;
+
+.section {
+
+	display: flex;
+	align-items: center;
+
+	.title-and-list {
+		width: 75%;
+		.title {
+			padding-left: @side-padding;
+			padding-bottom: ~"calc(@{side-padding} / 5)";
+			font-size: @fs-medium;
+			border-bottom: 3px dotted @white;
+		}
+		.item-row {
+			font-size: ~"calc(25vh * .3 * .4 * .6)";
+			display: flex;
+			align-items:center;
+			padding-top: 2%;
+			padding-bottom: 2%;
+			.quantity {
+				width: 13%;
+				padding-left: 7%;
+			}
+			.item {
+				width: 40%;
+
+			}
+			.progress-bar {
+				width: 40%;
+				background-color: @gold;
+				height: ~"calc(25vh * .3 * .4 * .6 * .1)";
+				display: flex;
+				align-items: center;
+				.inner-progress-bar {
+					width: 50%;
+					background-color: @white;
+					height: ~"calc(25vh * .3 * .4 * .6 * .3)";
+				}
+			}
+		}
+	}
+	.progress-indicator {
+		width:25%;
+		display: flex;
+		align-items: center;
+		.progress-box {
+			margin-left: 10%;
+			padding: 10% 0 10% 0;
+			height: ~"calc(65vh * .1)";
+			width: ~"calc(65vh * .1)";
+			
+			.circle-text{
+				font-size:  ~"calc(65vh * .08)";
+			}
+			
+		}
+		.total {
+			font-size: ~"calc(25vh * .3 * .4 * .6)";
+			color: @gold;
+			margin-left: 5%;
+		}
+	}
+
+}

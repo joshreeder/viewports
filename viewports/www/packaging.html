@@ -1,0 +1,40 @@
+{% extends 'templates/vp_base.html' %}
+
+{% block page_styles %}
+<link rel="stylesheet/less" type="text/css" href="assets/viewports/css/packaging.less" />
+{% endblock %}
+
+{% block page %}
+<div class="body packaging-page">
+  <div class="row sa-thead">
+    <div class="weight">
+      weights
+    </div>
+    <div class="item">
+      item
+    </div>
+    <div class="dynos">
+      5 lb dynos
+    </div>
+  </div>
+  <div class="item-list">
+    {% for item in page.products %}
+    <div class="row item-row">
+      <div class="weight">
+       <div class="number">{{item.weight}}</div> <div class="oz">oz</div>
+      </div>
+      <div class="item">
+        {{item.name}}
+      </div>
+      <div class="dynos">
+        {{item.completed}} / {{item.total}}
+      </div>
+    </div>
+    {% endfor %}
+
+    {{stock_entry}}
+
+ 
+  </div>
+</div>
+{% endblock %}
