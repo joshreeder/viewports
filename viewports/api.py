@@ -4,8 +4,50 @@ import datetime
 import frappe
 import frappe.defaults
 
+import pprint
+pp = pprint.PrettyPrinter(indent=4)
+
 @frappe.whitelist()
 def get_header(allow_guest=True):
+	harvs = frappe.get_all('Harvest')
+
+	sales_orders = frappe.get_all('Sales Order')
+
+	groups = {}
+	for so in sales_orders:
+		so_doc = frappe.get_doc('Sales Order',so['name'])
+		for item in so_doc.items:
+			item = item.__dict__
+			#pp.pprint(item.__dict__)
+			group = item["item_group"]
+			if groups.get(group) is not None:
+				groups[group] += item["total_weight"]
+			else:
+				groups[group] = item["total_weight"]
+	#pp.pprint(groups)
+
+	lbs_needed = sum([groups[key] for key in groups]) * 2
+
+	lbs_needed = int(lbs_needed)
+
+	#print "LBS needed",lbs_needed
+
+	#print "SO",sales_orders
+
+	#print "Harvs",harvs
+
+	lbs_harvested = 0
+	for harv in harvs:
+		harv_doc = frappe.get_doc('Harvest',harv['name'])
+		harv = harv_doc.__dict__
+		lbs_harvested += int(harv['request_weight'])
+
+	#print "LBS HAR",lbs_harvested
+
+	percent_complete = ( float(lbs_harvested)/float(lbs_needed) ) * 100
+	percent_complete = str(int(percent_complete)) + "%"
+
+	#print "GetHeader",harv
 	now = datetime.datetime.now()
 	header = {
 		"daily_average": "24,000",
@@ -13,10 +55,10 @@ def get_header(allow_guest=True):
 		"date":now.strftime("%b. %d"),
 		"time": now.strftime("%H:%M"),
 		"pounds_today": {
-			"packed": "18,482",
-			"total":"27,500"
+			"packed": lbs_harvested,
+			"total":lbs_needed
 		},
-		"percent_complete":"67%",
+		"percent_complete":percent_complete,
 		"speed":"3,800"
 
 	}
