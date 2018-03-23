@@ -69,14 +69,40 @@ def get_packaging(allow_guest=True):
 
 	context = {}
 
-	product = {
-		"weight":"6-8",
-		"name":"fre rrt fil",
-		"completed":15,
-		"total":20
-	}
+	sales_orders = frappe.get_all('Sales Order')
 
-	products = [product for item in range(6)]
+	item_codes = {}
+	for so in sales_orders:
+		so_doc = frappe.get_doc('Sales Order',so['name'])
+		for item in so_doc.items:
+			item = item.__dict__
+			item_code = item.get("item_code")
+			if item_codes.get(item_code) is not None:
+				item_codes[item_code] += item["qty"]
+			else:
+				item_codes[item_code] = item["qty"]
+	pp.pprint(item_codes)
+
+	products = []
+
+	for key in item_codes:
+		item = {
+			"weight":"?",
+			"name":key,
+			"completed":"?",
+			"total":item_codes[key]
+		}
+		products.append(item)
+
+
+	# product = {
+	# 	"weight":"6-8",
+	# 	"name":"fre rrt fil",
+	# 	"completed":15,
+	# 	"total":20
+	# }
+
+	# products = [product for item in range(6)]
 
 	page = {
 		"products":products
@@ -136,4 +162,49 @@ def get_sub_assembly(allow_guest=True):
 	context["items"] = [item for x in range(5)]
 
 	return context
+
+@frappe.whitelist()
+def get_arrivals(allow_guest=True):
+
+	harvs = frappe.get_all('Harvest Request')
+	harvests = {}
+	for harv in harvs:
+		harv_doc = frappe.get_doc('Harvest Request',harv['name'])
+		harv = harv_doc.__dict__
+		fish = harv["name"]
+		#pp.pprint(harv)
+		if harvests.get(fish) is not None:
+			harvests[fish]["expected"] += int(harv["weight"])
+		else:
+			harvests[fish] = {
+				"expected": int(harv["weight"]),
+				"received": 0,
+				"fish": harv["fish"],
+				"time": harv["harvest_time"]
+			}
+
+	harvs = frappe.get_all('Harvest')
+	print harvs
+	for harv in harvs:
+		harv_doc = frappe.get_doc('Harvest',harv['name'])
+		harv = harv_doc.__dict__
+		fish = harv["harvest_request"]
+		if harvests.get(fish) is not None:
+			harvests[fish]["received"] += int(harv["sample_weight"])
+
+	harv_list = []
+	for key in harvests:
+		harv = harvests[key]
+		percent_complete = float(harv["received"]) / float(harv["expected"])
+		print percent_complete
+		if percent_complete > 1:
+			percent_complete = 1
+		percent_complete = percent_complete*100
+		percent_complete = str(percent_complete)
+		harvests[key]["percent_complete"] = percent_complete
+		harv_list.append(harvests[key])
+
+	pp.pprint(harvests)
+
+	return {"harvests":harv_list}
 	
