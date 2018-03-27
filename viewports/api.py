@@ -117,7 +117,18 @@ def get_trimming(allow_guest=True):
 	context = {}
 	trimmer = {"id":"e25","bins":14}
 
-	context["trimmers"] = [trimmer for item in range(20)]
+	trimmers = frappe.get_all("Trimmer Code")
+	trimmer_objs = []
+	for trim in trimmers:
+		trim_doc = frappe.get_doc('Trimmer Code',trim['name'])
+		trim = trim_doc.__dict__
+		obj = {
+			"name": trim["name"],
+			"trimmer_number": trim["trimmer_number"]
+		}
+		trimmer_objs.append(obj)
+
+	context["trimmers"] = trimmer_objs
 
 	context["pb"] = 34
 	context["hopb"] = 22
@@ -166,6 +177,8 @@ def get_sub_assembly(allow_guest=True):
 @frappe.whitelist()
 def get_arrivals(allow_guest=True):
 
+
+	#Get harvests
 	harvs = frappe.get_all('Harvest Request')
 	harvests = {}
 	for harv in harvs:
@@ -206,5 +219,42 @@ def get_arrivals(allow_guest=True):
 
 	pp.pprint(harvests)
 
-	return {"harvests":harv_list}
+	#Get transfers
+	transfers = frappe.get_all('Fish Transfer Request')
+	tran_obj = {}
+	for tran in transfers:
+		tran_doc = frappe.get_doc('Fish Transfer Request',tran['name'])
+		tran = tran_doc.__dict__
+		pp.pprint(tran)
+
+		farm_list = tran["farm"].split()
+		farm = ""
+		for word in farm_list:
+			farm += word[0]
+		tran_obj[tran["name"]] = {
+			"expected": int(tran["weight"]),
+			"received": 0,
+			"farm": farm,
+			"fish_variety": tran["fish_variety"]
+		}
+
+	transfers = frappe.get_all('Fish Transfer')
+	for tran in transfers:
+		tran_doc = frappe.get_doc('Fish Transfer',tran['name'])
+		tran = tran_doc.__dict__
+		#print tran['request']
+		tran_obj[tran['request']]["received"] += int(tran['weight'])
+		tran_obj[tran['request']]["time"] = tran["time"]
+	
+
+	tran_list = [tran_obj[key] for key in tran_obj if tran_obj[key]["received"] > 0]
+
+	for idx,item in enumerate(tran_list):
+		tran_list[idx]["percent_complete"] = int((float(item["received"]) / float(item["expected"])) * 100)
+
+	pp.pprint(tran_list)
+
+
+
+	return {"harvests":harv_list,"transfers":tran_list}
 	
