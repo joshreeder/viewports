@@ -7,16 +7,35 @@ import frappe.defaults
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
+tdate = datetime.datetime.strptime('27032018', "%d%m%Y").date()
+
+
+def get_docs(doctype):
+	docs = frappe.get_all(doctype)
+	doc_objs = []
+	for doc in docs:
+		doc = frappe.get_doc(doctype,doc['name'])
+		doc_objs.append(doc)
+	return doc_objs
+
+
+
 @frappe.whitelist()
 def get_header(allow_guest=True):
-	harvs = frappe.get_all('Harvest')
 
-	sales_orders = frappe.get_all('Sales Order')
+	
+	sales_orders = frappe.get_all("Sales Order", fields=["*"])
+	sales_orders = [item for item in sales_orders if item['delivery_date'] == tdate]
+
+	harv_reqs = frappe.get_all("Harvest Request", fields=["*"])
+	harv_reqs = [item for item in harv_reqs if item['harvest_date'] == tdate]
 
 	groups = {}
 	for so in sales_orders:
-		so_doc = frappe.get_doc('Sales Order',so['name'])
-		for item in so_doc.items:
+		so = frappe.get_doc('Sales Order',so['name'])
+		so = so.__dict__
+		items = so["items"]
+		for item in items:
 			item = item.__dict__
 			#pp.pprint(item.__dict__)
 			group = item["item_group"]
@@ -24,30 +43,17 @@ def get_header(allow_guest=True):
 				groups[group] += item["total_weight"]
 			else:
 				groups[group] = item["total_weight"]
-	#pp.pprint(groups)
 
 	lbs_needed = sum([groups[key] for key in groups]) * 2
-
 	lbs_needed = int(lbs_needed)
 
-	#print "LBS needed",lbs_needed
-
-	#print "SO",sales_orders
-
-	#print "Harvs",harvs
-
 	lbs_harvested = 0
-	for harv in harvs:
-		harv_doc = frappe.get_doc('Harvest',harv['name'])
-		harv = harv_doc.__dict__
-		lbs_harvested += int(harv['request_weight'])
-
-	#print "LBS HAR",lbs_harvested
+	for harv in harv_reqs:
+		lbs_harvested += int(harv['weight'])
 
 	percent_complete = ( float(lbs_harvested)/float(lbs_needed) ) * 100
 	percent_complete = str(int(percent_complete)) + "%"
 
-	#print "GetHeader",harv
 	now = datetime.datetime.now()
 	header = {
 		"daily_average": "24,000",
