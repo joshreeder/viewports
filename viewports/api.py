@@ -4,6 +4,12 @@ import datetime
 import frappe
 import frappe.defaults
 
+try:
+	from handlers.Arrivals import Arrivals
+except Exception as ex:
+	print(ex)
+
+
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -75,7 +81,8 @@ def get_packaging(allow_guest=True):
 
 	context = {}
 
-	sales_orders = frappe.get_all('Sales Order')
+	sales_orders = frappe.get_all('Sales Order', fields=["*"])
+	sales_orders = [item for item in sales_orders if item['delivery_date'] == tdate]
 
 	item_codes = {}
 	for so in sales_orders:
@@ -152,22 +159,52 @@ def get_trimming(allow_guest=True):
 
 @frappe.whitelist()
 def get_packing(allow_guest=True):
-	context = {}
-	item = {}
-	item["name"] = "4-6oz frs rrt fil"
-	item["quantity"] = 4
-	item["percent_complete"] = "50%"
 
-	context["customers"] = []
-	for idx in range(3):
-		customer = {}
-		customer["name"] = "sysco"
-		customer["items_total"] = 24
-		customer["items_completed"] = 4
-		customer["items"] = [item for x in range(3)]
-		context["customers"].append(customer)
+	sales_orders = frappe.get_all('Sales Order', fields=["*"])
+	sales_orders = [item for item in sales_orders if item['delivery_date'] == tdate]
 
-	return context
+	orders = []
+	for so in sales_orders:
+		so_doc = frappe.get_doc('Sales Order',so['name'])
+		order = {
+			"company":so_doc.customer_name,
+			"items":[],
+			"total_quantity": 0,
+			"total_packed": 0
+		}
+		for item in so_doc.items:
+			item = item.__dict__
+			order_item = {
+				"packed": 0,
+				"quantity": int(item['qty']),
+				"item_code": item['item_code']
+			}
+			order["total_quantity"] += int(item['qty'])
+			order["items"].append(order_item)
+		orders.append(order)
+
+	pp.pprint(orders)
+
+	return {"orders":orders}
+
+
+
+	# context = {}
+	# item = {}
+	# item["name"] = "4-6oz frs rrt fil"
+	# item["quantity"] = 4
+	# item["percent_complete"] = "50%"
+
+	# context["customers"] = []
+	# for idx in range(3):
+	# 	customer = {}
+	# 	customer["name"] = "sysco"
+	# 	customer["items_total"] = 24
+	# 	customer["items_completed"] = 4
+	# 	customer["items"] = [item for x in range(3)]
+	# 	context["customers"].append(customer)
+
+	# return context
 
 @frappe.whitelist()
 def get_sub_assembly(allow_guest=True):
@@ -183,84 +220,8 @@ def get_sub_assembly(allow_guest=True):
 @frappe.whitelist()
 def get_arrivals(allow_guest=True):
 
-
-	#Get harvests
-	harvs = frappe.get_all('Harvest Request')
-	harvests = {}
-	for harv in harvs:
-		harv_doc = frappe.get_doc('Harvest Request',harv['name'])
-		harv = harv_doc.__dict__
-		fish = harv["name"]
-		#pp.pprint(harv)
-		if harvests.get(fish) is not None:
-			harvests[fish]["expected"] += int(harv["weight"])
-		else:
-			harvests[fish] = {
-				"expected": int(harv["weight"]),
-				"received": 0,
-				"fish": harv["fish"],
-				"time": harv["harvest_time"]
-			}
-
-	harvs = frappe.get_all('Harvest')
-	print harvs
-	for harv in harvs:
-		harv_doc = frappe.get_doc('Harvest',harv['name'])
-		harv = harv_doc.__dict__
-		fish = harv["harvest_request"]
-		if harvests.get(fish) is not None:
-			harvests[fish]["received"] += int(harv["sample_weight"])
-
-	harv_list = []
-	for key in harvests:
-		harv = harvests[key]
-		percent_complete = float(harv["received"]) / float(harv["expected"])
-		print percent_complete
-		if percent_complete > 1:
-			percent_complete = 1
-		percent_complete = percent_complete*100
-		percent_complete = str(percent_complete)
-		harvests[key]["percent_complete"] = percent_complete
-		harv_list.append(harvests[key])
-
-	pp.pprint(harvests)
-
-	#Get transfers
-	transfers = frappe.get_all('Fish Transfer Request')
-	tran_obj = {}
-	for tran in transfers:
-		tran_doc = frappe.get_doc('Fish Transfer Request',tran['name'])
-		tran = tran_doc.__dict__
-		pp.pprint(tran)
-
-		farm_list = tran["farm"].split()
-		farm = ""
-		for word in farm_list:
-			farm += word[0]
-		tran_obj[tran["name"]] = {
-			"expected": int(tran["weight"]),
-			"received": 0,
-			"farm": farm,
-			"fish_variety": tran["fish_variety"]
-		}
-
-	transfers = frappe.get_all('Fish Transfer')
-	for tran in transfers:
-		tran_doc = frappe.get_doc('Fish Transfer',tran['name'])
-		tran = tran_doc.__dict__
-		#print tran['request']
-		tran_obj[tran['request']]["received"] += int(tran['weight'])
-		tran_obj[tran['request']]["time"] = tran["time"]
-	
-
-	tran_list = [tran_obj[key] for key in tran_obj if tran_obj[key]["received"] > 0]
-
-	for idx,item in enumerate(tran_list):
-		tran_list[idx]["percent_complete"] = int((float(item["received"]) / float(item["expected"])) * 100)
-
-	pp.pprint(tran_list)
+	data = Arrivals().get_data()
+	return data
 
 
-
-	return {"harvests":harv_list,"transfers":tran_list}
 	
