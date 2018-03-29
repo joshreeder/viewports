@@ -7,6 +7,7 @@ import frappe.defaults
 try:
 	from handlers.Arrivals import Arrivals
 	from handlers.SubAssembly import SubAssembly
+	from handlers.Trimming import Trimming
 except Exception as ex:
 	print(ex)
 
@@ -128,35 +129,11 @@ def get_packaging(allow_guest=True):
 
 @frappe.whitelist()
 def get_trimming(allow_guest=True):
-	context = {}
-	trimmer = {"id":"e25","bins":14}
-
-	trimmers = frappe.get_all("Trimmer Code")
-	trimmer_objs = []
-	for trim in trimmers:
-		trim_doc = frappe.get_doc('Trimmer Code',trim['name'])
-		trim = trim_doc.__dict__
-		obj = {
-			"name": trim["name"],
-			"trimmer_number": trim["trimmer_number"]
-		}
-		trimmer_objs.append(obj)
-
-	context["trimmers"] = trimmer_objs
-
-	context["pb"] = 34
-	context["hopb"] = 22
-	context["ho"] = 3
-	context["pbf"] = 84
-	context["cc"] = 21
-	context["ccto"] = 13
-	context["hbccto"] = 3
-
-	context["trimmed"] = 180
-	context["average"] = 193
-	context["record"] = 212
-
-	return context
+	try:
+		data = Trimming().get_data()
+	except Exception as ex:
+		print ex
+	return data
 
 @frappe.whitelist()
 def get_packing(allow_guest=True):
