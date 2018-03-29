@@ -6,6 +6,7 @@ import frappe.defaults
 
 try:
 	from handlers.Arrivals import Arrivals
+	from handlers.SubAssembly import SubAssembly
 except Exception as ex:
 	print(ex)
 
@@ -208,14 +209,11 @@ def get_packing(allow_guest=True):
 
 @frappe.whitelist()
 def get_sub_assembly(allow_guest=True):
-	context = {}
-	item = {}
-	item["name"] = "red fillets"
-	item["bins"] = {"completed":12,"total":18}
-
-	context["items"] = [item for x in range(5)]
-
-	return context
+	try:
+		data = SubAssembly().get_data()
+	except Exception as ex:
+		print ex
+	return data
 
 @frappe.whitelist()
 def get_arrivals(allow_guest=True):

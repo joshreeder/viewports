@@ -17,5 +17,5 @@ class Page:
 		}
 	def percent_complete(self,a,b):
 		percent_complete = ( float(a)/float(b) ) * 100
-		percent_complete = str(int(b)) + "%"
+		percent_complete = str(int(percent_complete)) + "%"
 		return percent_complete
