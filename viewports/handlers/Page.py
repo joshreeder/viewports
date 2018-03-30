@@ -16,10 +16,26 @@ class Page:
 		return {'message': 'Dummy handle function, overload me!'}
 	def get_header(self):
 		return {'message': 'Dummy handle function, overload me!'}
+
+	def get_announcements(self):
+
+		rooms = frappe.get_all('Chat Room', fields=["*"])
+		rooms = [item['name'] for item in rooms if 'announcement' in item['room_name'].lower()]
+
+		messages = frappe.get_all('Chat Message', fields=["*"])
+		messages = [item for item in messages if item['room'] in rooms]
+
+		messages = sorted(messages, key=lambda k: k['creation'], reverse=True)
+
+		messages = [item['content'] for item in messages]
+		
+		return messages
+
 	def get_data(self):
 		return {
 			"header":self.get_header(),
-			"page":self.get_page()
+			"page":self.get_page(),
+			"announcements":self.get_announcements()
 		}
 	def percent_complete(self,a,b):
 		percent_complete = ( float(a)/float(b) ) * 100
