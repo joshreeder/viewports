@@ -57,12 +57,21 @@ class Page:
 			doc = doc.__dict__
 			items = doc["items"]
 			for item in items:
-				item = item.__dict__
-				group = item["item_code"]
+				entry = item.__dict__
+				group = entry["item_code"]
+				item = frappe.get_doc('Item',entry["item_code"]).__dict__
+				# print "item"
+				# pp.pprint(item)
 				if groups.get(group) is not None:
-					groups[group] += item["qty"]
+					groups[group]['qty'] += entry["qty"]
 				else:
-					groups[group] = item["qty"]
+					groups[group] = {}
+					groups[group]['qty'] = entry["qty"]
+					if item['weight_per_unit'] != None:
+						groups[group]['weight_per_unit'] = item['weight_per_unit']
+					else:
+						groups[group]['weight_per_unit'] = 1.0
+
 
 		return groups
 
@@ -91,7 +100,7 @@ class Page:
 
 		for key in entries:
 			if key in res:
-				res[key]['packed'] += entries[key]
+				res[key]['packed'] += entries[key]['qty']
 
 		return res
 
@@ -105,4 +114,11 @@ class Page:
 		for item in phrase:
 			word += item[0]
 		return word
+
+	def separate_oz(self,item_code):
+		idx = item_code.upper().index("OZ")
+		res = {}
+		res["name"] = item_code[idx+3:]
+		res["oz"] = item_code[:idx]
+		return res
 

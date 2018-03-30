@@ -33,8 +33,6 @@ class Trimming(Page):
 
 		}
 
-		self.get_trimmer_scores()
-
 		return header
 
 	def get_page(self):
