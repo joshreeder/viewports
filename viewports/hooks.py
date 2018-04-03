@@ -90,23 +90,29 @@ app_license = "MIT"
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"viewports.tasks.all"
-# 	],
-# 	"daily": [
-# 		"viewports.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"viewports.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"viewports.tasks.weekly"
-# 	]
-# 	"monthly": [
-# 		"viewports.tasks.monthly"
-# 	]
-# }
+scheduler_events = {
+	# "all": [
+	# 	"viewports.tasks.all"
+	# ],
+	# "daily": [
+	# 	"viewports.tasks.daily"
+	# ],
+	# "hourly": [
+	# 	"viewports.tasks.hourly"
+	# ],
+	# "weekly": [
+	# 	"viewports.tasks.weekly"
+	# ]
+	# "monthly": [
+	# 	"viewports.tasks.monthly"
+	# ],
+    "cron": {
+        "0/1 * * * *": [
+            "tasks.create_daily_summary"
+        ]
+    }
+}
+
 
 # Testing
 # -------
