@@ -107,7 +107,7 @@ scheduler_events = {
 	# 	"viewports.tasks.monthly"
 	# ],
     "cron": {
-        "0/1 * * * *": [
+        "00 02 * * *": [
             "tasks.create_daily_summary"
         ]
     }

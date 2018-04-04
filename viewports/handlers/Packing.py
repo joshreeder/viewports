@@ -20,7 +20,7 @@ class Packing(Page):
 
 		now = datetime.datetime.now()
 		header = {
-			"daily_average": "24,000",
+			"daily_average": self.get_average("packaged_actual"),
 			"weekday":now.strftime("%A"),
 			"date":now.strftime("%b. %d"),
 			"time": now.strftime("%H:%M"),

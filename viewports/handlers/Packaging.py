@@ -20,7 +20,7 @@ class Packaging(Page):
 		percent_complete = self.percent_complete(completed,total)
 
 		header = {
-			"daily_average": "24,000",
+			"daily_average": self.get_average("shipped_actual"),
 			"weekday":now.strftime("%A"),
 			"date":now.strftime("%b. %d"),
 			"time": now.strftime("%H:%M"),

@@ -14,6 +14,8 @@ class Trimming(Page):
 		res = self.get_sub_assemblies()
 
 		daily_reports = self.get_daily_reports()
+		avg = self.get_average("packaged_actual")
+		print "avg",avg
 
 		completed = sum([res[key]['packed'] for key in res])
 		total = sum([res[key]['total'] for key in res])
@@ -22,7 +24,7 @@ class Trimming(Page):
 		percent_complete = self.percent_complete(completed,total)
 
 		header = {
-			"daily_average": "24,000",
+			"daily_average": self.get_average("trimmed_actual"),
 			"weekday":now.strftime("%A"),
 			"date":now.strftime("%b. %d"),
 			"time": now.strftime("%H:%M"),
@@ -66,9 +68,12 @@ class Trimming(Page):
 
 		pp.pprint(context)
 
-		context["trimmed"] = 180
-		context["average"] = 193
-		context["record"] = 212
+		total_trimmed = sum([item["bins"] for item in trimmer_objs])
+
+		context["trimmed"] = total_trimmed
+		context["average"] = float(total_trimmed) / float(len(trimmer_objs))
+		context["record"] = self.get_record('trimmed_actual')
+
 
 		return context
 

@@ -20,6 +20,7 @@ def create_daily_summary():
 	temp_dict = {}
 
 	arrivals = Arrivals().get_page()
+	tdate = Arrivals().tdate
 
 	# Transfers
 	transfers = []
@@ -136,8 +137,6 @@ def create_daily_summary():
 
 	temp_dict["shipped_requested"] = requested
 	temp_dict["shipped_actual"] = actual
-
-	tdate = datetime.datetime.strptime('27032018', "%d%m%Y").date()
 
 	temp_dict["date"] = tdate
 

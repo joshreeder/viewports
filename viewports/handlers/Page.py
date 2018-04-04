@@ -23,6 +23,31 @@ class Page:
 		pp.pprint(daily_reports)
 		return daily_reports
 
+	def get_average(self,key):
+		total = 0
+		count = 0
+		drs = self.get_daily_reports()
+		for report in drs:
+			if report.get(key) != None:
+				total += int(report.get(key))
+				count += 1
+
+		if count < 1:
+			count = 1
+		avg = float(total) / float(count)
+		return avg
+
+	def get_record(self,key):
+		record = 0.0
+		drs = self.get_daily_reports()
+		for report in drs:
+			if report.get(key) != None:
+				chal = float(report.get(key))
+				if chal > record:
+					record = chal
+		return record
+
+
 	def get_announcements(self):
 
 		rooms = frappe.get_all('Chat Room', fields=["*"])
