@@ -15,7 +15,6 @@ class Trimming(Page):
 
 		daily_reports = self.get_daily_reports()
 		avg = self.get_average("packaged_actual")
-		print "avg",avg
 
 		completed = sum([res[key]['packed'] for key in res])
 		total = sum([res[key]['total'] for key in res])
@@ -51,7 +50,6 @@ class Trimming(Page):
 
 		subs = self.get_sub_assemblies()
 
-		pp.pprint(subs)
 
 		context["subs"] = []
 
@@ -65,8 +63,6 @@ class Trimming(Page):
 
 
 		context["trimmers"] = trimmer_objs
-
-		pp.pprint(context)
 
 		total_trimmed = sum([item["bins"] for item in trimmer_objs])
 

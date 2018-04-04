@@ -46,7 +46,6 @@ class Packing(Page):
 		orders = {}
 		for so in sales_orders:
 			so_doc = frappe.get_doc('Sales Order',so['name'])
-			#pp.pprint(so_doc.__dict__)
 			order = {
 				"company":so_doc.customer_name,
 				"items":{},
@@ -88,9 +87,6 @@ class Packing(Page):
 				item["percent_complete"] = self.percent_complete(item["packed"],item["quantity"])
 				item_list.append(item)
 			order['items'] = item_list
-			#order["percent_complete"] = self.percent_complete(order["total_packed"],order["total_quantity"])
 			order_list.append(order)
-
-		pp.pprint(order_list)
 
 		return order_list

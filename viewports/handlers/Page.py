@@ -10,10 +10,7 @@ pp = pprint.PrettyPrinter(indent=4)
 class Page:
 
 	def __init__(self):
-		print "Date"
-		#self.tdate = datetime.datetime.strptime('27032018', "%d%m%Y").date()
 		self.tdate = datetime.datetime.now().date()
-		print self.tdate
 
 	def get_page(self):
 		return {'message': 'Dummy handle function, overload me!'}
@@ -22,8 +19,6 @@ class Page:
 
 	def get_daily_reports(self):
 		daily_reports = frappe.get_all("Processing Plant Daily Report Temp", fields=["*"])
-		print "Daily Reports:"
-		pp.pprint(daily_reports)
 		return daily_reports
 
 	def get_average(self,key):
@@ -114,8 +109,6 @@ class Page:
 				entry = item.__dict__
 				group = entry["item_code"]
 				item = frappe.get_doc('Item',entry["item_code"]).__dict__
-				# print "item"
-				# pp.pprint(item)
 				if groups.get(group) is not None:
 					groups[group]['qty'] += entry["qty"]
 				else:

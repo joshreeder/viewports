@@ -43,7 +43,6 @@ class Arrivals(Page):
 			harv_doc = frappe.get_doc('Harvest Request',harv['name'])
 			harv = harv_doc.__dict__
 			fish = harv["name"]
-			#pp.pprint(harv)
 			if harvests.get(fish) is not None:
 				harvests[fish]["expected"] += int(harv["weight"])
 			else:
@@ -66,15 +65,12 @@ class Arrivals(Page):
 		for key in harvests:
 			harv = harvests[key]
 			percent_complete = float(harv["received"]) / float(harv["expected"])
-			print percent_complete
 			if percent_complete > 1:
 				percent_complete = 1
 			percent_complete = percent_complete*100
 			percent_complete = str(percent_complete)
 			harvests[key]["percent_complete"] = percent_complete
 			harv_list.append(harvests[key])
-
-		pp.pprint(harvests)
 
 		tran_list = self.get_transfers()
 
@@ -110,7 +106,6 @@ class Arrivals(Page):
 		for tran in transfers:
 			tran_doc = frappe.get_doc('Fish Transfer',tran['name'])
 			tran = tran_doc.__dict__
-			#print tran['request']
 			tran_obj[tran['request']]["received"] += int(tran['weight'])
 			tran_obj[tran['request']]["time"] = tran["time"]
 		
@@ -119,7 +114,5 @@ class Arrivals(Page):
 
 		for idx,item in enumerate(tran_list):
 			tran_list[idx]["percent_complete"] = int((float(item["received"]) / float(item["expected"])) * 100)
-
-		pp.pprint(tran_list)
 
 		return tran_list

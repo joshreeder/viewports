@@ -101,8 +101,6 @@ def create_daily_summary():
 	temp_dict["trimmed_requested"] = requested
 	temp_dict["trimmed_actual"] = actual
 
-	pp.pprint(trimmed.__dict__)
-
 	# Packaging
 	# Still need to implement sub items
 	packing = Packing().get_data()

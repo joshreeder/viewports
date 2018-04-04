@@ -15,8 +15,6 @@ class SubAssembly(Page):
 		
 		res = self.get_sub_assemblies()
 
-		pp.pprint(res)
-
 		completed = sum([res[key]['packed'] for key in res])
 		total = sum([res[key]['total'] for key in res])
 
