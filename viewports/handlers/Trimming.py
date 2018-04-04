@@ -13,6 +13,8 @@ class Trimming(Page):
 	def get_header(self):
 		res = self.get_sub_assemblies()
 
+		daily_reports = self.get_daily_reports()
+
 		completed = sum([res[key]['packed'] for key in res])
 		total = sum([res[key]['total'] for key in res])
 

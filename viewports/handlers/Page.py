@@ -17,6 +17,12 @@ class Page:
 	def get_header(self):
 		return {'message': 'Dummy handle function, overload me!'}
 
+	def get_daily_reports(self):
+		daily_reports = frappe.get_all("Processing Plant Daily Report Temp", fields=["*"])
+		print "Daily Reports:"
+		pp.pprint(daily_reports)
+		return daily_reports
+
 	def get_announcements(self):
 
 		rooms = frappe.get_all('Chat Room', fields=["*"])
