@@ -12,28 +12,33 @@ class Packaging(Page):
 
 	def get_header(self):
 
-		products = self.get_production_items()
-		completed = sum([products[key]['completed'] * products[key]['weight_per_unit'] for key in products])
-		total = sum([products[key]['total'] * products[key]['weight_per_unit'] for key in products])
+		try:
 
-		now = datetime.datetime.now()
-		percent_complete = self.percent_complete(completed,total)
+			products = self.get_production_items()
+			completed = sum([products[key]['completed'] * products[key]['weight_per_unit'] for key in products])
+			total = sum([products[key]['total'] * products[key]['weight_per_unit'] for key in products])
 
-		header = {
-			"daily_average": self.get_average("shipped_actual"),
-			"weekday":now.strftime("%A"),
-			"date":now.strftime("%b. %d"),
-			"time": now.strftime("%H:%M"),
-			"pounds_today": {
-				"packed": completed,
-				"total":total
-			},
-			"percent_complete":percent_complete,
-			"speed":"3,800"
+			now = datetime.datetime.now()
+			percent_complete = self.percent_complete(completed,total)
 
-		}
+			header = {
+				"daily_average": self.get_average("shipped_actual"),
+				"weekday":now.strftime("%A"),
+				"date":now.strftime("%b. %d"),
+				"time": now.strftime("%H:%M"),
+				"pounds_today": {
+					"packed": completed,
+					"total":total
+				},
+				"percent_complete":percent_complete,
+				"speed":"3,800"
 
-		return header
+			}
+
+			return header
+
+		except Exception as ex:
+			print ex
 
 	def get_page(self):
 

@@ -10,7 +10,10 @@ pp = pprint.PrettyPrinter(indent=4)
 class Page:
 
 	def __init__(self):
-		self.tdate = datetime.datetime.strptime('27032018', "%d%m%Y").date()
+		print "Date"
+		#self.tdate = datetime.datetime.strptime('27032018', "%d%m%Y").date()
+		self.tdate = datetime.datetime.now().date()
+		print self.tdate
 
 	def get_page(self):
 		return {'message': 'Dummy handle function, overload me!'}
@@ -69,6 +72,10 @@ class Page:
 			"announcements":self.get_announcements()
 		}
 	def percent_complete(self,a,b):
+		if b == 0:
+			if a > 0:
+				return "100%"
+			return "0%"
 		percent_complete = ( float(a)/float(b) ) * 100
 		percent_complete = str(int(percent_complete)) + "%"
 		return percent_complete
