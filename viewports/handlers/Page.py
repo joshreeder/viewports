@@ -10,7 +10,8 @@ pp = pprint.PrettyPrinter(indent=4)
 class Page:
 
 	def __init__(self):
-		self.tdate = datetime.datetime.now().date()
+		#self.tdate = datetime.datetime.now().date()
+		self.tdate = datetime.datetime.strptime('27032018', "%d%m%Y").date()
 
 	def get_page(self):
 		return {'message': 'Dummy handle function, overload me!'}
