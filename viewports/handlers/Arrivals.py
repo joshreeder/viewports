@@ -82,8 +82,10 @@ class Arrivals(Page):
 
 	def get_transfers(self):
 		#Get transfers
-		transfers = frappe.get_all('Fish Transfer Request', fields=["*"])
-		transfers = [item for item in transfers if item['date'] == self.tdate]
+		transfers = frappe.get_all('Fish Transfer Request', 
+			fields=["*"],
+			filters={"date":self.tdate})
+		#transfers = [item for item in transfers if item['date'] == self.tdate]
 
 		tran_obj = {}
 		for tran in transfers:

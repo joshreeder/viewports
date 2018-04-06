@@ -77,8 +77,9 @@ class Page:
 		return percent_complete
 
 	def get_packaging_requests(self):
-		sales_orders = frappe.get_all("Sales Order", fields=["*"])
-		sales_orders = [item for item in sales_orders if item['delivery_date'] == self.tdate]
+		sales_orders = frappe.get_all("Sales Order", 
+			fields=["name"],
+			filters={"delivery_date":self.tdate})
 
 		groups = {}
 		for so in sales_orders:
@@ -96,9 +97,14 @@ class Page:
 		return groups
 
 	def get_stock_entries(self,filter_by=None):
-		entries = frappe.get_all("Stock Entry", fields=["*"])
-		if filter_by != None:
-			entries = [item for item in entries if item['posting_date'] == self.tdate and item['purpose'] == filter_by]
+		filters = {
+			"posting_date":self.tdate
+		}
+		if filter_by is not None:
+			filters["purpose"] = filter_by
+		entries = frappe.get_all("Stock Entry", 
+			fields=["name"],
+			filters=filters)
 
 		res = []
 		groups = {}
