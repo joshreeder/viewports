@@ -1,4 +1,4 @@
-from __future__ import unicode_literals
+
 import frappe
 import datetime
 import pprint
@@ -12,13 +12,13 @@ def get_context(context):
 		entry = frappe.get_doc('Stock Entry',item.name)
 		if entry.items:
 			stock_entries[idx]["items"] = entry.items
-	print stock_entries
-	print"done"
+	print(stock_entries)
+	print("done")
 
-	print "get doc test"
+	print("get doc test")
 	stock_entry = frappe.get_doc('Stock Entry','STE-00001')
 	pp.pprint( stock_entry.__dict__ )
-	print "stock Entry"
+	print("stock Entry")
 	pp.pprint( stock_entry.items[0].__dict__)
 
 

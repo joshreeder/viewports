@@ -1,10 +1,10 @@
-from __future__ import unicode_literals
+
 import datetime
 import frappe
 import frappe.defaults
 import pprint
 
-from Page import Page
+from .Page import Page
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -38,7 +38,7 @@ class Packaging(Page):
 			return header
 
 		except Exception as ex:
-			print ex
+			print(ex)
 
 	def get_page(self):
 
@@ -86,4 +86,4 @@ class Packaging(Page):
 			return item_codes
 
 		except Exception as ex:
-			print ex
+			print(ex)

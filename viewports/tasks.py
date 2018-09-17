@@ -1,15 +1,15 @@
-from __future__ import unicode_literals
+
 import frappe
 import datetime
 
 import pprint
 
 try:
-	from handlers.Arrivals import Arrivals
-	from handlers.SubAssembly import SubAssembly
-	from handlers.Trimming import Trimming
-	from handlers.Packing import Packing
-	from handlers.Packaging import Packaging
+	from .handlers.Arrivals import Arrivals
+	from .handlers.SubAssembly import SubAssembly
+	from .handlers.Trimming import Trimming
+	from .handlers.Packing import Packing
+	from .handlers.Packaging import Packaging
 except Exception as ex:
 	print(ex)
 
@@ -184,15 +184,15 @@ def create_daily_summary():
 	## TEMP NEW DOC
 	dr_doc = frappe.new_doc("Processing Plant Daily Report Temp")
 
-	print "Updating..."
+	print("Updating...")
 	pp.pprint([shipped])
 	dr_doc.update(temp_dict)
 	pp.pprint(dr_doc.__dict__)
-	print "Saving..."
+	print("Saving...")
 	dr_doc.save(ignore_permissions=True)
 	frappe.db.commit()
 
-	print "Daily Report Saved"
+	print("Daily Report Saved")
 	## END TEMP NEW DOC
 
 

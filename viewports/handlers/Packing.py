@@ -1,10 +1,10 @@
-from __future__ import unicode_literals
+
 import datetime
 import frappe
 import frappe.defaults
 import pprint
 
-from Page import Page
+from .Page import Page
 
 pp = pprint.PrettyPrinter(indent=4)
 
