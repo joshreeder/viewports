@@ -11,7 +11,7 @@ class Page:
 
 	def __init__(self):
 		#self.tdate = datetime.datetime.now().date()
-		self.tdate = datetime.datetime.strptime('27032018', "%d%m%Y").date()
+		self.tdate = datetime.datetime.strptime('11192018', "%d%m%Y").date()
 
 	def get_page(self):
 		return {'message': 'Dummy handle function, overload me!'}
@@ -58,7 +58,7 @@ class Page:
 		messages = sorted(messages, key=lambda k: k['creation'], reverse=True)
 
 		messages = [item['content'] for item in messages]
-		
+
 		return messages
 
 	def get_data(self):
@@ -77,7 +77,7 @@ class Page:
 		return percent_complete
 
 	def get_packaging_requests(self):
-		sales_orders = frappe.get_all("Sales Order", 
+		sales_orders = frappe.get_all("Sales Order",
 			fields=["name"],
 			filters={"delivery_date":self.tdate})
 
@@ -102,7 +102,7 @@ class Page:
 		}
 		if filter_by is not None:
 			filters["purpose"] = filter_by
-		entries = frappe.get_all("Stock Entry", 
+		entries = frappe.get_all("Stock Entry",
 			fields=["name"],
 			filters=filters)
 
@@ -175,4 +175,3 @@ class Page:
 		res["name"] = item_code[idx+3:]
 		res["oz"] = item_code[:idx]
 		return res
-

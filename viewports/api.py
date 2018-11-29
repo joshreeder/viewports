@@ -35,8 +35,11 @@ def get_trimming(allow_guest=True):
 
 @frappe.whitelist()
 def get_packing(allow_guest=True):
+	print "get packing called"
 	try:
 		data = Packing().get_data()
+		print "Packing Data:"
+		pp.pprint(data)
 	except Exception as ex:
 		print ex
 	return data
@@ -54,6 +57,3 @@ def get_arrivals(allow_guest=True):
 
 	data = Arrivals().get_data()
 	return data
-
-
-	
